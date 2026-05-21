@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>images/数据库.png</file>
+        <file>images/故障诊断.png</file>
+        <file>images/模型搭建.png</file>
+        <file>images/上传.png</file>
+        <file>images/数据增强.png</file>
+        <file>images/数据曲线.png</file>
+    </qresource>
+</RCC>

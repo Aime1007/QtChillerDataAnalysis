@@ -1,0 +1,25 @@
+# Build output
+build/
+*.o
+*.obj
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+Makefile
+*.pro.user
+
+# Qt Creator
+.qtcreator/
+
+# IDE
+.vscode/
+*.autosave
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db

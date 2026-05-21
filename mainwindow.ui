@@ -1,0 +1,3649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>冷水机组故障诊断可视化分析平台</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_main">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QListWidget" name="listWidget_nav">
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string/>
+      </property>
+      <item>
+       <property name="text">
+        <string>数据可视化</string>
+       </property>
+       <property name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/new/prefix1/images/数据曲线.png</normaloff>:/new/prefix1/images/数据曲线.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>数据增强</string>
+       </property>
+       <property name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/new/prefix1/images/数据增强.png</normaloff>:/new/prefix1/images/数据增强.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>数据库管理</string>
+       </property>
+       <property name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/new/prefix1/images/数据库.png</normaloff>:/new/prefix1/images/数据库.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>故障诊断算法模型训练</string>
+       </property>
+       <property name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/new/prefix1/images/模型搭建.png</normaloff>:/new/prefix1/images/模型搭建.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>故障诊断结果</string>
+       </property>
+       <property name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/new/prefix1/images/故障诊断.png</normaloff>:/new/prefix1/images/故障诊断.png</iconset>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget_main">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_database">
+       <property name="styleSheet">
+        <string notr="true">/* ----------------------
+ page_database 整体美化
+---------------------- */
+QWidget#page_database {
+    background-color: #f7f9fc;
+}
+
+/* 顶部标题区域 */
+QWidget#widget_top_bg {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+QLabel#label_title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* 字段选择分组框 */
+QGroupBox#groupBox_vars {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #34495e;
+}
+QGroupBox#groupBox_vars QCheckBox {
+    font-size: 13px;
+    color: #2c3e50;
+    padding: 4px;
+}
+
+/* 内容区域背景 */
+QWidget#widget_content {
+    background-color: #f7f9fc;
+}
+
+/* 表格、图表 外框卡片 */
+/*
+QGroupBox#groupBox_table,
+QGroupBox#groupBox_chart {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+}
+QGroupBox#groupBox_table::title,
+QGroupBox#groupBox_chart::title {
+    padding: 0 8px;
+}
+*/
+/* 表格、图表 外框卡片 */
+QGroupBox#groupBox_table,
+QGroupBox#groupBox_chart,
+QGroupBox#groupBox_table_5,
+QGroupBox#groupBox_table_6,
+QGroupBox#groupBox_table_7,
+QGroupBox#groupBox_6{
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    
+    /* 关键修改 1：增加顶部间距，14px的字建议给 22-25px */
+    margin-top: 8px; 
+    
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+    
+    /* 可选：增加内部边距，让里面的表格/图表不紧贴边框 */
+    padding: 10px;
+}
+
+/* 标题样式定位 */
+QGroupBox#groupBox_table::title,
+QGroupBox#groupBox_chart::title,
+QGroupBox#groupBox_table_5::title,
+QGroupBox#groupBox_table_6::title,
+QGroupBox#groupBox_table_7::title,
+QGroupBox#groupBox_6::title {
+    /* 关键修改 2：必须指定原点在 margin 区域，否则标题会下沉 */
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* 标题位置 */
+    
+    left: 12px;        /* 距离左边框的距离 */
+    padding: 0 4px;    /* 文字左右微调，防止碰到线 */
+    
+    /* 可选：如果想让标题背景透明或有特定颜色可以加在这 */
+    background-color: transparent; 
+}
+
+/* 搜索框 / 输入框 */
+QLineEdit#le_search_2 {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 5px;
+    font-size: 13px;
+}
+
+/* 表格样式 */
+QTableView#tableView_database {
+    background-color: #ffffff;
+    alternate-background-color: #f8fafb;
+    border: 1px solid #dce5f0;
+    gridline-color: #e9eef5;
+}
+QTableView#tableView_database::item {
+    padding: 5px;
+    font-size: 13px;
+}
+QHeaderView::section {
+    background-color: #eaf2fc;
+    color: #2b5a99;
+    font-weight: bold;
+    padding: 6px;
+    border: none;
+    border-right: 1px solid #d5e1f2;
+}
+
+/* 分页按钮 */
+QPushButton#btn_prev_page_2,
+QPushButton#btn_next_page_2 {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+}
+QPushButton#btn_prev_page_2:disabled,
+QPushButton#btn_next_page_2:disabled {
+    background-color: #cbd5e1;
+    color: #64748b;
+}
+
+QPushButton#btn_jump_page_2 {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* 图表控制按钮 */
+QPushButton#btn_show_chart {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+QPushButton#btn_save_chart {
+    background-color: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+QPushButton#btn_export_data {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* 文字标签统一大小 */
+QLabel#label_range,
+QLabel#label_page_size_2,
+QLabel#label_search_2,
+QLabel#lab_page_info_2 {
+    font-size: 13px;
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_21">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_title">
+          <item>
+           <widget class="QLabel" name="label_title">
+            <property name="text">
+             <string>数据库数据查看与趋势分析</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_title">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="2,3,3">
+          <item>
+           <widget class="QGroupBox" name="groupBox_6">
+            <property name="title">
+             <string>视频实时流</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_20" stretch="5,1,5,1,5">
+             <item>
+              <widget class="QGroupBox" name="groupBox_table_5">
+               <property name="title">
+                <string>视频流1</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <item>
+                 <layout class="QVBoxLayout" name="video_container"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_table_6">
+               <property name="title">
+                <string>视频流2</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <item>
+                 <layout class="QVBoxLayout" name="video_container2"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_table_7">
+               <property name="title">
+                <string>视频流3</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_10">
+                <item>
+                 <layout class="QVBoxLayout" name="video_container3"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_table">
+            <property name="title">
+             <string>数据库原始数据</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_2">
+               <item>
+                <widget class="QLabel" name="label_page_size_2">
+                 <property name="text">
+                  <string>每页显示：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_page_size_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>20</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>50</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>100</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_upload_2">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_search_2">
+                 <property name="text">
+                  <string>搜索：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_search_2">
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="placeholderText">
+                  <string>输入关键词搜索数据...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QTableView" name="tableView_database">
+               <property name="styleSheet">
+                <string/>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectionBehavior::SelectColumns</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <attribute name="verticalHeaderDefaultSectionSize">
+                <number>29</number>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_Page_2">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <spacer name="horizontalSpacer_page_2">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_prev_page_2">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>上一页</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="lab_page_info_2">
+                 <property name="text">
+                  <string>共 0 页</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_next_page_2">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>下一页</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_page_num_2">
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_jump_page_2">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="autoFillBackground">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>跳转</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_19" stretch="1">
+            <item>
+             <widget class="QGroupBox" name="groupBox_chart">
+              <property name="title">
+               <string>数据趋势图</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,6,1">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_vars">
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="chk_var2">
+                   <property name="text">
+                    <string>冷凝器压力</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="chk_var7">
+                   <property name="text">
+                    <string>环境温度</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QCheckBox" name="chk_var6">
+                   <property name="text">
+                    <string>压缩机转速</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QCheckBox" name="chk_var1">
+                   <property name="text">
+                    <string>冷凝器温度</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QCheckBox" name="chk_var4">
+                   <property name="text">
+                    <string>蒸发器压力</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QCheckBox" name="chk_var8">
+                   <property name="text">
+                    <string>环境湿度</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QCheckBox" name="chk_var3">
+                   <property name="text">
+                    <string>蒸发器温度</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QCheckBox" name="chk_var5">
+                   <property name="text">
+                    <string>压缩机功率</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QCheckBox" name="chk_var9">
+                   <property name="text">
+                    <string>制冷剂流量</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="sizeConstraint">
+                  <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_range">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>数据范围：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="RangeSlider" name="slider_data_range">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="minimum">
+                    <number>10</number>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>50</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="tickPosition">
+                    <enum>QSlider::TickPosition::TicksBelow</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QChartView" name="chartView" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>600</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_chart_ctrl">
+                 <item>
+                  <spacer name="horizontalSpacer_chart">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_show_chart">
+                   <property name="styleSheet">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string>生成趋势图</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_save_chart">
+                   <property name="text">
+                    <string>保存图表</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_export_data">
+                   <property name="text">
+                    <string>导出数据</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_test">
+       <property name="styleSheet">
+        <string notr="true">QWidget#page_test {
+    background-color: #f7f9fc; /* 页面整体浅灰背景 */
+}
+/* 诊断结果标题栏：绿色背景 + 高度固定 + 白色文字 */
+QLabel#label_diagnosis_title {
+    background-color: #00b37a; /* 匹配参考图的绿色 */
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 0 15px; /* 左右留白，上下靠固定高度撑 */
+    height: 40px; /* 固定标题栏高度 */
+    line-height: 40px; /* 文字垂直居中 */
+    border: 1px solid #00b37a; /* 标题栏边框和背景同色 */
+    border-bottom: none; /* 去掉标题栏底部边框，和内容区衔接 */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+/* 诊断结果内容区：白色背景 + 绿色边框 */
+QWidget#widget_diagnosis_content {
+    background-color: #ffffff; /* 白色背景 */
+    border: 1px solid #00b37a; /* 绿色边框，匹配标题栏 */
+    padding: 15px;
+    margin: 20px 20px 20px 20px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+/* 诊断结果文本标签 */
+QLabel#label_diagnosis_result {
+    font-size: 14px;
+    color: #1f2937;
+    padding: 8px;
+    background-color: #ffffff; /* 纯黑底，和内容区一致 */
+    border: none; /* 去掉原有边框 */
+    min-height: 40px;
+}
+/* 按钮样式（保持统一） */
+QPushButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+QPushButton:hover {
+    background-color: #2563eb;
+}
+QPushButton#btn_refresh_result {
+    background-color: #f59e0b;
+}
+QPushButton#btn_export_result {
+    background-color: #00b37a; /* 按钮绿色和边框一致 */
+}
+
+
+QPushButton#btn_stop1,
+ QPushButton#btn_stop2{
+background-color: #E53A40;
+color: white;
+border: none;
+border-radius: 6px;
+padding: 8px 30px;
+font-size: 13px;
+}
+QPushButton#btn_start1,
+QPushButton#btn_start2 {
+background-color: #10b981;
+color: white;
+border: none;
+border-radius: 6px;
+padding: 8px 30px;
+font-size: 13px;
+}
+
+/* 1. 主体设置 */
+QGroupBox#groupBox_table_2,
+QGroupBox#groupBox_table_3,
+QGroupBox#groupBox_table_upload_2,
+QGroupBox#groupBox_table_5,
+QGroupBox#groupBox_table_6,
+QGroupBox#groupBox_table_7 {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    
+    /* 关键修改：增加顶部间距（通常 20-25px 比较合适） */
+    margin-top: 8px; 
+    
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+    
+    /* 增加内部边距，防止内部的灰色 Label 顶到边框 */
+    padding-top: 10px; 
+}
+
+/* 2. 标题定位设置（必须添加） */
+QGroupBox::title {
+    /* subcontrol-origin 设为 margin，标题才会乖乖呆在上面留出的 20px 空间里 */
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* 标题居左上 */
+    left: 10px;                    /* 距离左边 10 像素 */
+    padding: 0 5px;                /* 标题文字左右留点白，防止碰到横线 */
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QGroupBox" name="groupBox_table_2">
+            <property name="font">
+             <font>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="title">
+             <string>合成少数类过采样</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,1,1,1">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_4" stretch="1,2,1,1,2">
+               <item>
+                <widget class="QLabel" name="label_page_size_4">
+                 <property name="text">
+                  <string>算法选择：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_2">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>ADASYN</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>ADASYN</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SMOTE</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SMOTE-EE</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_upload_4">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_search_4">
+                 <property name="text">
+                  <string>参数配置：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_4">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>默认</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>默认</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_hidden_layer_4">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="title">
+                <string>算法参数设置</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_hidden_4">
+                <property name="labelAlignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="formAlignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>15</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>10</number>
+                </property>
+                <item row="0" column="0" colspan="2">
+                 <widget class="QLabel" name="label">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>70</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>1000000</width>
+                    <height>1000000</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel {
+    background-color: #f4f4f5; 
+    color: #909399;
+    border-left: 5px solid #909399; /* 左侧加一条深灰色的竖线，增加设计感 */
+    border-radius: 4px;
+    padding-left: 10px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>参数已设置为默认</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_hidden_layer_3">
+               <property name="title">
+                <string>数据扩充参数设置</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_hidden_3">
+                <property name="labelAlignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="formAlignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>15</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>10</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_layer_type_3">
+                  <property name="text">
+                   <string>数据扩充方式：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="cbx_layer_type_3">
+                  <property name="editable">
+                   <bool>false</bool>
+                  </property>
+                  <property name="currentText">
+                   <string>按类别扩充</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>按类别扩充</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_neuron_num_3">
+                  <property name="text">
+                   <string>数据扩充数量：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="le_neuron_num_3">
+                  <property name="text">
+                   <string>2000</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_Page_4">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <spacer name="horizontalSpacer_page_4">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_start1">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>开始</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_page_5">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_stop1">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>停止</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_page_6">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_table_3">
+            <property name="font">
+             <font>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="title">
+             <string>生成对抗网络</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,0,1,1">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_5" stretch="1,2,1,1,2">
+               <item>
+                <widget class="QLabel" name="label_page_size_5">
+                 <property name="text">
+                  <string>算法选择：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_5">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>CWGAN-GP</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>CWGAN-GP</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>GAN</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CWGAN</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_upload_5">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_search_5">
+                 <property name="text">
+                  <string>参数配置：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_6">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>手动</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>手动</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>默认</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_hidden_layer_8">
+               <property name="title">
+                <string>算法参数设置</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_hidden_9">
+                <property name="labelAlignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="formAlignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>15</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>10</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_layer_type_6">
+                  <property name="text">
+                   <string>学习率：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_neuron_num_6">
+                  <property name="text">
+                   <string>训练轮数：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="le_neuron_num_6">
+                  <property name="text">
+                   <string>500</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                  <property name="suffix">
+                   <string>1</string>
+                  </property>
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_hidden_layer_6">
+               <property name="title">
+                <string>数据扩充参数设置</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_hidden_6">
+                <property name="labelAlignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="formAlignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>15</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>10</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_layer_type_4">
+                  <property name="text">
+                   <string>数据扩充方式：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="cbx_layer_type_7">
+                  <property name="editable">
+                   <bool>false</bool>
+                  </property>
+                  <property name="currentText">
+                   <string>扩充到与正常类别平衡</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>扩充到与正常类别平衡</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>按故障类别扩充</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_neuron_num_4">
+                  <property name="text">
+                   <string>数据扩充数量：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="le_neuron_num_4">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>2000</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_Page_5">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <spacer name="horizontalSpacer_page_7">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_start2">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>开始</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_page_8">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_stop2">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>停止</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_page_9">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_table_upload_2">
+          <property name="font">
+           <font>
+            <pointsize>-1</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="title">
+           <string>数据生成结果展示</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_3">
+             <item>
+              <widget class="QLabel" name="label_page_size_3">
+               <property name="text">
+                <string>每页显示：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cbx_page_size_3">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>10</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>20</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>50</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>100</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_upload_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_search_3">
+               <property name="text">
+                <string>搜索：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="le_search_3">
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>输入关键词搜索数据...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QTableView" name="tableView_2">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string/>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <attribute name="verticalHeaderDefaultSectionSize">
+              <number>35</number>
+             </attribute>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_Page_3">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="horizontalSpacer_page_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_prev_page_3">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>上一页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lab_page_info_3">
+               <property name="text">
+                <string>共 0 页</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_next_page_3">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>下一页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="le_page_num_3">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>1</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+               <property name="readOnly">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_jump_page_3">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>跳转</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_upload">
+       <property name="styleSheet">
+        <string notr="true">QWidget#page_upload {
+background-color: #f7f9fc;
+}
+
+/* 1. 主体设置 */
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    
+    /* 关键修改：增加顶部间距（通常 20-25px 比较合适） */
+    margin-top: 8px; 
+    
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+    
+    /* 增加内部边距，防止内部的灰色 Label 顶到边框 */
+    padding-top: 10px; 
+}
+
+/* 2. 标题定位设置（必须添加） */
+QGroupBox::title {
+    /* subcontrol-origin 设为 margin，标题才会乖乖呆在上面留出的 20px 空间里 */
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* 标题居左上 */
+    left: 10px;                    /* 距离左边 10 像素 */
+    padding: 0 5px;                /* 标题文字左右留点白，防止碰到横线 */
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_upload">
+        <property name="spacing">
+         <number>15</number>
+        </property>
+        <property name="leftMargin">
+         <number>15</number>
+        </property>
+        <property name="topMargin">
+         <number>15</number>
+        </property>
+        <property name="rightMargin">
+         <number>15</number>
+        </property>
+        <property name="bottomMargin">
+         <number>15</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupBox_upload">
+          <property name="font">
+           <font>
+            <pointsize>-1</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="title">
+           <string>用户上传数据</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_upload_group">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>15</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_file_tip">
+             <property name="styleSheet">
+              <string>font-size: 14px;</string>
+             </property>
+             <property name="text">
+              <string>请选择需要上传的文件(.xls/.xlsx)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_file">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btn_browse">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+/* 全局按钮样式：背景色+文字色+圆角+边框 */
+QPushButton {
+    background-color: #2E86AB; /* 背景色（蓝灰色） */
+    color: white;              /* 文字色（白色） */
+    border: none;              /* 去掉默认边框 */
+    border-radius: 4px;        /* 圆角（可选） */
+    padding: 6px 12px;         /* 内边距（上下6px，左右12px） */
+    font-size: 12px;           /* 字体大小 */
+}
+
+/* 按钮禁用状态（如无数据时的分页按钮） */
+QPushButton:disabled {
+    background-color: #CCCCCC; /* 禁用背景色（浅灰） */
+    color: #666666;            /* 禁用文字色（深灰） */
+}</string>
+               </property>
+               <property name="text">
+                <string>Browse...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="file_path">
+               <property name="styleSheet">
+                <string>border: 1px solid #ccc; padding: 5px; background: #f8f8f8; border-radius: 4px;</string>
+               </property>
+               <property name="text">
+                <string>未选择文件</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_upload">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+/* 全局按钮样式：背景色+文字色+圆角+边框 */
+QPushButton {
+    background-color: #2E86AB; /* 背景色（蓝灰色） */
+    color: white;              /* 文字色（白色） */
+    border: none;              /* 去掉默认边框 */
+    border-radius: 4px;        /* 圆角（可选） */
+    padding: 6px 12px;         /* 内边距（上下6px，左右12px） */
+    font-size: 12px;           /* 字体大小 */
+}
+
+/* 按钮禁用状态（如无数据时的分页按钮） */
+QPushButton:disabled {
+    background-color: #CCCCCC; /* 禁用背景色（浅灰） */
+    color: #666666;            /* 禁用文字色（深灰） */
+}</string>
+               </property>
+               <property name="text">
+                <string>Upload</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBar">
+             <property name="value">
+              <number>24</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBar_upload">
+             <property name="visible">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string/>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_table_upload">
+          <property name="font">
+           <font>
+            <pointsize>-1</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="title">
+           <string>数据展示</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl">
+             <item>
+              <widget class="QLabel" name="label_page_size">
+               <property name="text">
+                <string>每页显示：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cbx_page_size">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>10</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>20</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>50</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>100</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_upload">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_search">
+               <property name="text">
+                <string>搜索：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="le_search">
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>输入关键词搜索数据...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QTableView" name="tableView">
+             <property name="styleSheet">
+              <string/>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <attribute name="verticalHeaderDefaultSectionSize">
+              <number>35</number>
+             </attribute>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_Page">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="horizontalSpacer_page">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_prev_page">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>上一页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lab_page_info">
+               <property name="text">
+                <string>共 0 页</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_next_page">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>下一页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="le_page_num">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>1</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+               <property name="readOnly">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_jump_page">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>跳转</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_feature_scaling">
+       <property name="styleSheet">
+        <string notr="true">QWidget#page_feature_scaling {
+    background-color: #f7f9fc;
+}
+/* 模型结构标题栏 */
+QWidget#widget_model_title {
+    background-color: #f59e0b; /* 橙色标题栏 */
+    padding: 10px 15px;
+}
+QLabel#label_model_structure_title {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+/* 模型结构内容框 */
+QWidget#widget_model_content {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    padding: 15px;
+}
+QTextEdit#textEdit_model_structure {
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    padding: 8px;
+    line-height: 1.5;
+}
+/* 诊断结果标题栏 */
+QWidget#widget_diagnosis_title {
+    background-color: #10b981; /* 绿色标题栏 */
+    padding: 10px 15px;
+    margin-top: 15px;
+}
+QLabel#label_diagnosis_title {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+/* 诊断结果内容框 */
+QWidget#widget_diagnosis_content {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    padding: 15px;
+}
+QLabel#label_diagnosis_result {
+    font-size: 14px;
+    color: #1f2937;
+    padding: 8px;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    min-height: 40px;
+}
+/* 按钮样式 */
+QPushButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+QPushButton:hover {
+    background-color: #2563eb;
+}
+QPushButton#btn_refresh_result {
+    background-color: #f59e0b;
+}
+QPushButton#btn_export_result {
+    background-color: #10b981;
+}
+
+QPushButton#btn_stop3{
+background-color: #E53A40;
+color: white;
+border: none;
+border-radius: 6px;
+padding: 8px 30px;
+font-size: 13px;
+}
+
+QPushButton#btn_start3 {
+background-color: #10b981;
+color: white;
+border: none;
+border-radius: 6px;
+padding: 8px 30px;
+font-size: 13px;
+}
+
+/* 1. 主体设置 */
+QGroupBox#groupBox_table_l,
+QGroupBox#groupBox_table_r,
+QGroupBox#groupBox,
+ QGroupBox#groupBox_1,
+QGroupBox#groupBox_2,
+QGroupBox#groupBox_3,
+QGroupBox#groupBox_4{
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    
+    /* 关键修改：增加顶部间距（通常 20-25px 比较合适） */
+    margin-top: 8px; 
+    
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+    
+    /* 增加内部边距，防止内部的灰色 Label 顶到边框 */
+    padding-top: 10px; 
+}
+
+/* 2. 标题定位设置（必须添加） */
+QGroupBox::title {
+    /* subcontrol-origin 设为 margin，标题才会乖乖呆在上面留出的 20px 空间里 */
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* 标题居左上 */
+    left: 10px;                    /* 距离左边 10 像素 */
+    padding: 0 5px;                /* 标题文字左右留点白，防止碰到横线 */
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,10,1,5">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_model_title">
+          <property name="margin" stdset="0">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_model_structure_title">
+            <property name="text">
+             <string>模型结构</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_model_title">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QGroupBox" name="groupBox_table_l">
+            <property name="font">
+             <font>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="title">
+             <string>算法模型</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_9" stretch="1,1,2">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_7" stretch="1,2,1,1,2">
+               <item>
+                <widget class="QLabel" name="label_page_size_7">
+                 <property name="text">
+                  <string>算法模型选择：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_12">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>LightGBM</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>LightGBM</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>XGBoost</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CNN_BiLSTM</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_upload_7">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_search_7">
+                 <property name="text">
+                  <string>参数配置方式：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_13">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>默认</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>默认</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>超参数寻优</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_1">
+               <property name="title">
+                <string>深度算法参数设置</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_12">
+                <item>
+                 <widget class="QLabel" name="label_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>70</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>1000000</width>
+                    <height>1000000</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel {
+    background-color: #f4f4f5; 
+    color: #909399;
+    border-left: 5px solid #909399; /* 左侧加一条深灰色的竖线，增加设计感 */
+    border-radius: 4px;
+    padding-left: 10px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>参数已设置为默认</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="title">
+                <string>树集成学习算法模型超参数设置</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_13" stretch="2,2,2,3">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,5,1">
+                  <item>
+                   <widget class="QLabel" name="label_neuron_num_11">
+                    <property name="text">
+                     <string>叶子节点数：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_neuron_num_11">
+                    <property name="text">
+                     <string>31</string>
+                    </property>
+                    <property name="maxLength">
+                     <number>4</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_upload_11">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,5,1">
+                  <item>
+                   <widget class="QLabel" name="label_neuron_num_13">
+                    <property name="text">
+                     <string>树深度：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_neuron_num_13">
+                    <property name="text">
+                     <string>8</string>
+                    </property>
+                    <property name="maxLength">
+                     <number>4</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_upload_13">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="2,5,1">
+                  <item>
+                   <widget class="QLabel" name="label_neuron_num_12">
+                    <property name="text">
+                     <string>学习率：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_neuron_num_12">
+                    <property name="text">
+                     <string>0.01</string>
+                    </property>
+                    <property name="maxLength">
+                     <number>4</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_upload_14">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>44</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_table_r">
+            <property name="font">
+             <font>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="title">
+             <string>智能优化算法</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,1,2">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_8" stretch="1,3,1,1,1">
+               <item>
+                <widget class="QLabel" name="label_page_size_8">
+                 <property name="text">
+                  <string>算法选择：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_15">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>改进的加权平均优化算法IWAA</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>改进的加权平均优化算法IWAA</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_upload_8">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_search_8">
+                 <property name="text">
+                  <string>参数配置方式：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbx_layer_type_16">
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentText">
+                  <string>手动</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>手动</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>默认</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_3">
+               <property name="title">
+                <string>优化算法参数设置</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_hidden_13">
+                <property name="labelAlignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="formAlignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>15</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>10</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_layer_type_10">
+                  <property name="text">
+                   <string>种群规模：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_neuron_num_10">
+                  <property name="text">
+                   <string>最大迭代次数：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="le_neuron_num_10">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>30</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="le_neuron_num_14">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_4">
+               <property name="title">
+                <string>超参数优化范围设置</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_hidden_12">
+                <property name="labelAlignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="formAlignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>15</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>10</number>
+                </property>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_9" stretch="2,1,1,1,1,1">
+                  <item>
+                   <widget class="QLabel" name="label_page_size_9">
+                    <property name="text">
+                     <string>叶子节点数</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_page_size_10">
+                    <property name="text">
+                     <string>上界：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox">
+                    <property name="value">
+                     <number>64</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_upload_9">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_search_9">
+                    <property name="text">
+                     <string>下界：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_2">
+                    <property name="value">
+                     <number>8</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_10" stretch="2,1,1,1,1,1">
+                  <item>
+                   <widget class="QLabel" name="label_page_size_11">
+                    <property name="text">
+                     <string>树深度</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_page_size_12">
+                    <property name="text">
+                     <string>上界：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_3">
+                    <property name="value">
+                     <number>10</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_upload_10">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_search_10">
+                    <property name="text">
+                     <string>下界：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_4">
+                    <property name="value">
+                     <number>2</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_12" stretch="2,1,1,1,1,1">
+                  <item>
+                   <widget class="QLabel" name="label_page_size_15">
+                    <property name="text">
+                     <string>学习率</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_page_size_16">
+                    <property name="text">
+                     <string>上界：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                    <property name="value">
+                     <double>0.100000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_upload_12">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_search_12">
+                    <property name="text">
+                     <string>下界：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                    <property name="value">
+                     <double>0.010000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_Page_7">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_page_13">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_start3">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>开始训练</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_page_14">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_stop3">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>停止训练</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_page_15">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>模型训练进度</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QProgressBar" name="progressBar_train_2">
+             <property name="value">
+              <number>12</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="textEdit_model_structure">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="html">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Consolas','monospace'; font-size:12px; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;模型训练日志将显示在这里...&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   0]  train multi_error 0.130990  valid-1 multi_error 0.192708&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   1]  train multi_error 0.117448  valid-1 multi_error 0.148958&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   2]  train multi_error 0.099219  valid-1 multi_error 0.142708&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   3]  train multi_error 0.085286  valid-1 multi_error 0.128125&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   4]  train multi_error 0.071615  valid-1 multi_error 0.106250&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   5]  train multi_error 0.068229  valid-1 multi_error 0.095833&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   6]  train multi_error 0.065104  valid-1 multi_error 0.092708&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   7]  train multi_error 0.060156  valid-1 multi_error 0.102083&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   8]  train multi_error 0.058854  valid-1 multi_error 0.100000&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[   9]  train multi_error 0.055469  valid-1 multi_error 0.093750&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[  10]  train multi_error 0.054557  valid-1 multi_error 0.095833&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[  11]  train multi_error 0.052865  valid-1 multi_error 0.094792&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[  12]  train multi_error 0.050781  valid-1 multi_error 0.093750&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[  13]  train multi_error 0.049479  valid-1 multi_error 0.087500&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[  14]  train multi_error 0.048698  valid-1 multi_error 0.088542&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[  15]  train multi_error 0.045443  valid-1 multi_error 0.087500&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="plainText">
+              <string>模型训练日志将显示在这里...
+[   0]  train multi_error 0.130990  valid-1 multi_error 0.192708
+[   1]  train multi_error 0.117448  valid-1 multi_error 0.148958
+[   2]  train multi_error 0.099219  valid-1 multi_error 0.142708
+[   3]  train multi_error 0.085286  valid-1 multi_error 0.128125
+[   4]  train multi_error 0.071615  valid-1 multi_error 0.106250
+[   5]  train multi_error 0.068229  valid-1 multi_error 0.095833
+[   6]  train multi_error 0.065104  valid-1 multi_error 0.092708
+[   7]  train multi_error 0.060156  valid-1 multi_error 0.102083
+[   8]  train multi_error 0.058854  valid-1 multi_error 0.100000
+[   9]  train multi_error 0.055469  valid-1 multi_error 0.093750
+[  10]  train multi_error 0.054557  valid-1 multi_error 0.095833
+[  11]  train multi_error 0.052865  valid-1 multi_error 0.094792
+[  12]  train multi_error 0.050781  valid-1 multi_error 0.093750
+[  13]  train multi_error 0.049479  valid-1 multi_error 0.087500
+[  14]  train multi_error 0.048698  valid-1 multi_error 0.088542
+[  15]  train multi_error 0.045443  valid-1 multi_error 0.087500</string>
+             </property>
+             <property name="placeholderText">
+              <string>模型结构信息将显示在这里...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_model">
+       <property name="styleSheet">
+        <string notr="true">QWidget#page_model {
+    background-color: #f7f9fc;
+}
+/*
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+}
+QGroupBox::title {
+    padding: 0 8px;
+}
+QLabel {
+    font-size: 13px;
+    color: #2c3e50;
+}
+QLineEdit, QComboBox {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 13px;
+    min-height: 28px;
+}
+
+QSlider {
+    min-height: 40px;
+}
+QSlider::groove:horizontal {
+    border: 1px solid #d1d5db;
+    height: 8px;
+    border-radius: 4px;
+    background: #f1f5f9;
+}
+QSlider::handle:horizontal {
+    background: #3b82f6;
+    border: 1px solid #2563eb;
+    width: 18px;
+    height: 18px;
+    margin: -5px 0;
+    border-radius: 9px;
+}
+*/
+/* 诊断结果标题栏：绿色背景 + 高度固定 + 白色文字 */
+QLabel#label_diagnosis {
+    background-color: #f15c5c; /* 匹配参考图的绿色 */
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 0 15px; /* 左右留白，上下靠固定高度撑 */
+    height: 40px; /* 固定标题栏高度 */
+    line-height: 40px; /* 文字垂直居中 */
+    border: 1px solid #00b37a; /* 标题栏边框和背景同色 */
+    border-bottom: none; /* 去掉标题栏底部边框，和内容区衔接 */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+QPushButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+QPushButton:hover {
+    background-color: #2563eb;
+}
+QPushButton#btn_result1 {
+    background-color: #f59e0b;
+}
+QPushButton#btn_result2 {
+    background-color: #00b37a; /* 按钮绿色和边框一致 */
+}
+
+/* 1. 主体设置 */
+QGroupBox{
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    
+    /* 关键修改：增加顶部间距（通常 20-25px 比较合适） */
+    margin-top: 8px; 
+    
+    font-size: 14px;
+    font-weight: bold;
+    color: #334155;
+    
+    /* 增加内部边距，防止内部的灰色 Label 顶到边框 */
+    padding-top: 10px; 
+}
+
+/* 2. 标题定位设置（必须添加） */
+QGroupBox::title {
+    /* subcontrol-origin 设为 margin，标题才会乖乖呆在上面留出的 20px 空间里 */
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* 标题居左上 */
+    left: 10px;                    /* 距离左边 10 像素 */
+    padding: 0 5px;                /* 标题文字左右留点白，防止碰到横线 */
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_17">
+        <item>
+         <widget class="QLabel" name="label_model_title">
+          <property name="styleSheet">
+           <string>font-size:16px; font-weight:bold; color:#2c3e50;</string>
+          </property>
+          <property name="text">
+           <string>模型搭建 - 参数配置</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,1">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_15">
+            <item>
+             <widget class="QGroupBox" name="groupBox_hidden_layer">
+              <property name="title">
+               <string>数据源选择</string>
+              </property>
+              <widget class="QRadioButton" name="radioButton">
+               <property name="geometry">
+                <rect>
+                 <x>13</x>
+                 <y>62</y>
+                 <width>102</width>
+                 <height>24</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>数据库数据</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QRadioButton" name="rb_realtime_stream">
+               <property name="geometry">
+                <rect>
+                 <x>14</x>
+                 <y>31</y>
+                 <width>102</width>
+                 <height>24</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>实时数据流</string>
+               </property>
+              </widget>
+              <widget class="QRadioButton" name="radioButton_3">
+               <property name="geometry">
+                <rect>
+                 <x>13</x>
+                 <y>93</y>
+                 <width>87</width>
+                 <height>24</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>本地文件</string>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_hidden_layer_2">
+              <property name="title">
+               <string>模型选择</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_18">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_11" stretch="1,3,0,1">
+                 <item>
+                  <widget class="QLabel" name="label_page_size_13">
+                   <property name="text">
+                    <string>加载模型文件：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="cbx_layer_type_14">
+                   <property name="editable">
+                    <bool>false</bool>
+                   </property>
+                   <property name="currentText">
+                    <string>LightGBM_18_Jan_2026_14_23_09</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>LightGBM_18_Jan_2026_14_23_09</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>XGBoost</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>CNN_BiLSTM</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_upload_15">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_browse_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">
+/* 全局按钮样式：背景色+文字色+圆角+边框 */
+QPushButton {
+    background-color: #2E86AB; /* 背景色（蓝灰色） */
+    color: white;              /* 文字色（白色） */
+    border: none;              /* 去掉默认边框 */
+    border-radius: 4px;        /* 圆角（可选） */
+    padding: 6px 12px;         /* 内边距（上下6px，左右12px） */
+    font-size: 12px;           /* 字体大小 */
+}
+
+/* 按钮禁用状态（如无数据时的分页按钮） */
+QPushButton:disabled {
+    background-color: #CCCCCC; /* 禁用背景色（浅灰） */
+    color: #666666;            /* 禁用文字色（深灰） */
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>浏览...</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_result3_2">
+              <property name="text">
+               <string>开始预测</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_table_4">
+            <property name="title">
+             <string>数据</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_14">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_upload_ctrl_6">
+               <item>
+                <spacer name="horizontalSpacer_upload_6">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_search_6">
+                 <property name="text">
+                  <string>搜索：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_search_4">
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="placeholderText">
+                  <string>输入关键词搜索数据...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QTableView" name="tableView_diagnosis">
+               <property name="styleSheet">
+                <string/>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectionBehavior::SelectColumns</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <attribute name="verticalHeaderDefaultSectionSize">
+                <number>29</number>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_Page_6">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>故障诊断结果</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <item>
+            <widget class="QLabel" name="label_diagnosis">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>冷凝器结垢</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_diagnosis_btn_2">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_diagnosis_btn_2">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_result1">
+            <property name="text">
+             <string>刷新结果</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_result2">
+            <property name="text">
+             <string>导出结果</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_result3">
+            <property name="text">
+             <string>查看详情</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_diagnosis">
+       <property name="styleSheet">
+        <string notr="true">QWidget#page_diagnosis {
+    background-color: #f7f9fc; /* 页面整体浅灰背景 */
+}
+/* 诊断结果标题栏：绿色背景 + 高度固定 + 白色文字 */
+QLabel#label_diagnosis_title {
+    background-color: #00b37a; /* 匹配参考图的绿色 */
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 0 15px; /* 左右留白，上下靠固定高度撑 */
+    height: 40px; /* 固定标题栏高度 */
+    line-height: 40px; /* 文字垂直居中 */
+    border: 1px solid #00b37a; /* 标题栏边框和背景同色 */
+    border-bottom: none; /* 去掉标题栏底部边框，和内容区衔接 */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+/* 诊断结果内容区：白色背景 + 绿色边框 */
+QWidget#widget_diagnosis_content {
+    background-color: #ffffff; /* 白色背景 */
+    border: 1px solid #00b37a; /* 绿色边框，匹配标题栏 */
+    padding: 15px;
+    margin: 20px 20px 20px 20px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+/* 诊断结果文本标签 */
+QLabel#label_diagnosis_result {
+    font-size: 14px;
+    color: #1f2937;
+    padding: 8px;
+    background-color: #ffffff; /* 纯黑底，和内容区一致 */
+    border: none; /* 去掉原有边框 */
+    min-height: 40px;
+}
+/* 按钮样式（保持统一） */
+QPushButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+QPushButton:hover {
+    background-color: #2563eb;
+}
+QPushButton#btn_refresh_result {
+    background-color: #f59e0b;
+}
+QPushButton#btn_export_result {
+    background-color: #00b37a; /* 按钮绿色和边框一致 */
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_diagnosis">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="margin" stdset="0">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_diagnosis_title">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>诊断结果</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_diagnosis_content">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+          </property>
+          <property name="margin" stdset="0">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_diagnosis_result">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>冷凝器结垢</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_diagnosis_btn">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <spacer name="horizontalSpacer_diagnosis_btn">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_refresh_result">
+              <property name="text">
+               <string>刷新结果</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_export_result">
+              <property name="text">
+               <string>导出结果</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_detail">
+              <property name="text">
+               <string>查看详情</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1600</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QWidget</extends>
+   <header>qchartview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RangeSlider</class>
+   <extends>QSlider</extends>
+   <header>rangeslider.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>listWidget_nav</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>stackedWidget_main</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>100</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>800</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
